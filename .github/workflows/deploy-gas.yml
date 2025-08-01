@@ -1,0 +1,43 @@
+# .github/workflows/deploy-gas.yml
+
+name: Deploy GAS
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔄 リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: 📦 Node.js 環境をセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: 📂 .env ファイルを復元
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+
+      - name: 📥 依存関係をインストール
+        run: npm ci
+
+      - name: 🔐 clasp ログイン情報を設定
+        env:
+          CLASP_CREDENTIALS: ${{ secrets.CLASP_CREDENTIALS }}
+        run: |
+          mkdir -p ~/.clasprc
+          echo "${CLASP_CREDENTIALS}" > ~/.clasprc.json
+
+      # - name: 🔑 .env → GAS スクリプトプロパティを同期
+        #   run: node gas-sync-props.js
+
+      - name: 🛠 clasp push
+        run: npm run deploy
+

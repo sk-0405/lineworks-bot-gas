@@ -1,0 +1,20 @@
+# 環境変数ファイル（ローカル用）
+.env
+.env.local
+# clasp 認証情報
+.clasp.json
+.clasp-dev.json
+.credentials.json
+credentials.json
+# Node.js 関連
+node_modules/
+npm-debug.log
+# macOS, VSCode 等のローカルファイル
+.DS_Store
+.vscode/
+# GAS push で生成されるもの
+dist/
+node_modules
+build/
+.clasp*.json
+*.tgz
