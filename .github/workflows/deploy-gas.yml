@@ -19,7 +19,7 @@ jobs:
       - name: 📦 Node.js 環境をセットアップ
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
 
       - name: 📂 .env ファイルを復元
         run: |
@@ -33,11 +33,11 @@ jobs:
           CLASP_CREDENTIALS: ${{ secrets.CLASP_CREDENTIALS }}
         run: |
           mkdir -p ~/.clasprc
-          echo "${CLASP_CREDENTIALS}" > ~/.clasprc.json
+          echo "${CLASPRC_CHILD_JSON}" > ~/.clasprc.json
+
+      - name: 🛠 clasp push
+        run: npx clasp push --force
+        # run: npm run deploy
 
       # - name: 🔑 .env → GAS スクリプトプロパティを同期
         #   run: node gas-sync-props.js
-
-      - name: 🛠 clasp push
-        run: npm run deploy
-
