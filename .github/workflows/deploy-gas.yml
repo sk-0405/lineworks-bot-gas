@@ -21,23 +21,23 @@ jobs:
         with:
           node-version: '20'
 
-      - name: 📂 .env ファイルを復元
-        run: |
-          echo "${{ secrets.ENV_FILE }}" > .env
+      # - name: 📂 .env ファイルを復元
+      #   run: |
+      #     echo "${{ secrets.ENV_FILE }}" > .env
 
       - name: 📥 依存関係をインストール
         run: npm ci
 
       - name: 🔐 clasp ログイン情報を設定
         env:
-          CLASP_CREDENTIALS: ${{ secrets.CLASP_CREDENTIALS }}
+          CLASP_CREDENTIALS: ${{ secrets.CLASPRC_CHILD_JSON }}
         run: |
           mkdir -p ~/.clasprc
-          echo "${CLASPRC_CHILD_JSON}" > ~/.clasprc.json
+          echo "${CLASP_CREDENTIALS}" > ~/.clasprc.json
 
       - name: 🛠 clasp push
         run: npx clasp push --force
-        # run: npm run deploy
+        #   run: npm run deploy
 
       # - name: 🔑 .env → GAS スクリプトプロパティを同期
         #   run: node gas-sync-props.js
